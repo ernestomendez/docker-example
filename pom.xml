@@ -85,7 +85,7 @@
     						<!-- the %g menans: The last part of the Maven group name, sanitized so that it can be used as username on GitHub. Only the part after the last dot is used. E.g. for a group id io.fabric8 this placeholder would insert fabric8-->
     						<name>%g/docker-demo:0.1</name>
     						<build>
-    							<dockerFileDir>${project.basedir}/src/main/docker</dockerFileDir>
+    							<dockerFileDir>${project.basedir}/target/dockerfile/</dockerFileDir>
 
     							<assembly>
     								<descriptorRef>artifact</descriptorRef>
@@ -97,9 +97,35 @@
     						</build>
     					</image>
     				</images>
-
-
     			</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.gmavenplus</groupId>
+    			<artifactId>gmavenplus-plugin</artifactId>
+    			<version>1.6</version>
+    			<executions>
+    				<execution>
+    					<phase>prepare-package</phase>
+    					<goals>
+    						<goal>execute</goal>
+    					</goals>
+    				</execution>
+    			</executions>
+    			<configuration>
+    				<scripts>
+    					<script>
+    						file:///${project.basedir}/src/main/scripts/BuildDockerfile.groovy
+    					</script>
+    				</scripts>
+    			</configuration>
+    			<dependencies>
+    				<dependency>
+    					<groupId>org.codehaus.groovy</groupId>
+    					<artifactId>groovy-all</artifactId>
+    					<version>2.4.13</version>
+    					<scope>runtime</scope>
+    				</dependency>
+    			</dependencies>
 			</plugin>
 		</plugins>
 	</build>

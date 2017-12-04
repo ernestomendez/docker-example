@@ -1,0 +1,7 @@
+FROM openjdk
+
+VOLUME /tmp
+#This change is needed because with the static file names, each time we change the version of the project we need to change this file
+ADD maven/${fileName}.jar ${fileName}.jar
+RUN sh -c 'touch /${fileName}.jar'
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/${fileName}.jar"]
